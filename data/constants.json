@@ -4,6 +4,6 @@
 		"QUERY_PARAM": { "pages": 2 }
 	},
 	"DB_QUERIES":{
-		"GET_SALES_QUOTE": "SELECT TOP 1 * FROM [AdventureWorksDW2019].[dbo].[FactSalesQuota] WHERE [Date] ='2010-12-29 00:00:00.000'"
+		"GET_SALES_QUOTE": "SELECT TOP 1 * FROM [DB].[dbo].[tbl] WHERE [Date] ='2023-07-20 00:00:00.000'"
 	}
 }

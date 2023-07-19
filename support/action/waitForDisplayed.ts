@@ -12,7 +12,7 @@ export default async (selector: Selector, falseCase: unknown) => {
      * Maximum number of milliseconds to wait for
      * @type {Int}
      */
-    const ms = 10000;
+    const ms = 15000;
 
     await $(selector).waitForDisplayed({
         timeout: ms,

@@ -70,7 +70,9 @@ Then(/^I open SITA App for Upload file$/, async() => {
           });
       }
       
-      runAutoItScript(`${__dirname}\\testdata`, 'Upload_FIle_Script.exe');
+      //runAutoItScript(`${__dirname}\\testdata`, 'Upload_FIle_Script.exe');
+
+      runAutoItScript(`C:\\Users\\Ashvin.Mewara\\Documents\\WDIO_TypeScript_Cucumber\\testdata`, 'Upload_FIle_Script.exe');
 
         await browser.pause(2000)
 

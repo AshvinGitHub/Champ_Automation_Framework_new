@@ -1,10 +1,15 @@
 import type { Options } from '@wdio/types'
  import dotenv from 'dotenv'
+
+ //import allure from '@wdio/allure-reporter'
+
  dotenv.config()
 //  import path from 'path';
 // import { fileURLToPath } from 'url';
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
+import { Http } from 'winston/lib/winston/transports'
+
 
 
 export const config: Options.Testrunner = {
@@ -69,20 +74,23 @@ export const config: Options.Testrunner = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        maxInstances: 1,
+        maxInstances: 3,
         browserName: 'chrome',
         acceptInsecureCerts : true,
+        'goog:chromeOptions': {
+            args: ['--ignore-certificate-errors']
+        },
        // port: 5555
     }, 
     // {
-    //     maxInstances: 1,
+    //     maxInstances: 3,
     //     browserName: 'firefox',
     //     acceptInsecureCerts : true,
     //     //port: 5555
     // }
     , 
     {
-        maxInstances: 1,
+        maxInstances: 3,
         browserName: 'MicrosoftEdge',
         acceptInsecureCerts : true,
         //port: 5555
@@ -97,6 +105,12 @@ export const config: Options.Testrunner = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: 'error',
+    ///// SSL certificate by pass
+    ////////
+
+        strictSSL: false,
+        
+
     //
     // Set specific log levels per logger
     // loggers:
@@ -162,7 +176,8 @@ export const config: Options.Testrunner = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec','junit',['allure', {outputDir: 'allure-results'}],'cucumberjs-json'],
+    reporters: ['spec','junit',['allure', {outputDir: 'allure-results',disableWebdriverStepsReporting: false,
+    disableWebdriverScreenshotsReporting: false,}],'cucumberjs-json'],
 
     //
     // If you are using Cucumber you need to specify the location of your step definitions.
@@ -349,6 +364,28 @@ export const config: Options.Testrunner = {
      */
     // onComplete: function(exitCode, config, capabilities, results) {
     // },
+
+    // onComplete: function() {
+    //     const reportError = new Error('Could not generate Allure report')
+    //     const generation = allure(['generate', 'allure-results', '--clean'])
+    //     return new Promise<void>((resolve, reject) => {
+    //         const generationTimeout = setTimeout(
+    //             () => reject(reportError),
+    //             5000)
+
+    //         generation.on('exit', function(exitCode) {
+    //             clearTimeout(generationTimeout)
+
+    //             if (exitCode !== 0) {
+    //                 return reject(reportError)
+    //             }
+
+    //             console.log('Allure report successfully generated')
+    //             resolve()
+    //         })
+    //     })
+    // }
+
     /**
     * Gets executed when a refresh happens.
     * @param {string} oldSessionId session ID of the old session

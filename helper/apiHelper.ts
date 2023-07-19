@@ -17,13 +17,14 @@ async function GET(testid: string, baseURL: string, endpoint: string, authToken:
     //reporter.addStep("", "info", `Making a GET to ${endpoint}`)
     try
     {
-    return await  request(baseURL)
+    return await  request(baseURL)    
     .get(endpoint)
     .query(queryParam)
     .auth(authToken, { type: 'bearer' })
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
     //console.log(`Response : ${JSON.stringify(response)}`);
+    
     }
     catch(err)
     {
