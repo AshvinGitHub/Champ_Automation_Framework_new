@@ -4,6 +4,8 @@
 */
 
 import { UserLoginCredentials } from "../../config/execution.configuration.js"
+import dotenv from 'dotenv'
+dotenv.config()
 
 export default class Page {
     /**

@@ -64,7 +64,7 @@ class LoginPage extends Page {
      * overwrite specific options to adapt it to page object
      */
     public open () {
-        return super.open('login');
+        return super.open('/');
        
        // return super.open(`${UserLoginCredentials.qa.URL}`);
     }
