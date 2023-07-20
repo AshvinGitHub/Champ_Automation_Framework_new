@@ -1,9 +1,9 @@
 import type { Options } from '@wdio/types'
  import dotenv from 'dotenv'
-
+ dotenv.config()
  //import allure from '@wdio/allure-reporter'
 
- dotenv.config()
+
 //  import path from 'path';
 // import { fileURLToPath } from 'url';
 // const __filename = fileURLToPath(import.meta.url);
@@ -74,7 +74,7 @@ export const config: Options.Testrunner = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        maxInstances: 3,
+        maxInstances: 1,
         browserName: 'chrome',
         acceptInsecureCerts : true,
         'goog:chromeOptions': {
@@ -90,7 +90,7 @@ export const config: Options.Testrunner = {
     // }
     , 
     {
-        maxInstances: 3,
+        maxInstances: 1,
         browserName: 'MicrosoftEdge',
         acceptInsecureCerts : true,
         //port: 5555
@@ -259,8 +259,22 @@ export const config: Options.Testrunner = {
      * @param {Array.<String>} specs        List of spec file paths that are to be run
      * @param {object}         browser      instance of created browser/device session
      */
-    // before: function (capabilities, specs) {
-    // },
+
+    before: function (capabilities, specs) {
+        browser.maximizeWindow()
+        //@ts-ignore
+        browser.options["environment"] = config.environment
+        //@ts-ignore
+        browser.options["URL"]= config.URL
+        //@ts-ignore
+        browser.options["testURL"] = config.testURL
+        //@ts-ignore
+        browser.options["reqresBaseURL"] = config.reqresBaseURL
+        //@ts-ignore
+        browser.options["SITBaseURL"] = config.SITBaseURL
+    },
+
+
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {string} commandName hook command name

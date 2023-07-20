@@ -8,6 +8,7 @@ import constants from "../../data/constants.json" assert { type: "json" };
 import fs from 'fs'
 import apiHelper from '../../helper/apiHelper.js';
 import { UserLoginCredentials } from '../../config/execution.configuration.js';
+import * as actionMethods from '../../export/actionsMethods.js'
 
 const pages = {
     login: LoginPage
@@ -26,23 +27,24 @@ Then(/^I should see a flash message saying (.*)$/, async (message) => {
     await expect(SecurePage.flashAlert).toHaveTextContaining(message);
 });
 
-Then(/^I open SITA App for Upload file$/, async() => {
+Then(/^I open SITA App for Upload file$/, async(page) => {
 
-    await browser.maximizeWindow();
-      //await browser.setWindowSize(811, 625)
-      await browser.url("https://xadvpweb1.borders.devnet.sita.aero/api-pnr-portal/security/login")
-      
-      await expect(browser).toHaveUrl("https://xadvpweb1.borders.devnet.sita.aero/api-pnr-portal/security/login")
-      await browser.$("#username").click()
+   // await pages[page].open(UserLoginCredentials.qa.Sita_Url)
+    await actionMethods.openWebsite('url', UserLoginCredentials.qa.Sita_Url)
+      //await expect(browser).toHaveUrl(UserLoginCredentials.qa.Sita_Url)
+
+      await void actionMethods.clickElement('click', 'selector', await "#username")
+
+      await actionMethods.setInputField('setValue', UserLoginCredentials.qa.Sita_UName, await "#username")            
       await browser.takeScreenshot();
-      await browser.$("#username").setValue("PSXNV_JXRUM@coforge.com")
-      await browser.takeScreenshot();
-      await browser.$("#password").click()
-      await browser.takeScreenshot();
-      await browser.$("#password").click()
-      await browser.$("#password").setValue("WRqda@12345#")
-      await browser.$("//*[@id=\"login\"]/span[1]").click()
-      await browser.$("aria/DATA SUBMISSION").click()
+      await void actionMethods.clickElement('click', 'selector', await "#password")
+
+      await actionMethods.setInputField('setValue', UserLoginCredentials.qa.Sita_Pwd, await "#password")            
+    
+      await void actionMethods.clickElement('click', 'selector', await "//*[@id=\"login\"]/span[1]")
+
+      await void actionMethods.clickElement('click', 'selector', await "aria/DATA SUBMISSION")
+
       const batchUploadLink = await $("aria/Quick/Batch upload")
       await browser.takeScreenshot();
     await batchUploadLink.waitForDisplayed({ timeout: 3000 })
@@ -55,7 +57,6 @@ Then(/^I open SITA App for Upload file$/, async() => {
       await browse.click()
       await browser.takeScreenshot();
  
-      //const execFile = require('child_process').execFile;
       await browser.pause(1000)
       let runAutoItScript = function(pathToScript, scriptName) {
         console.info(`\n> Started execution of ${scriptName} ...`);
@@ -70,9 +71,11 @@ Then(/^I open SITA App for Upload file$/, async() => {
           });
       }
       
+      let filePPath = `${process.cwd()}/testdata`
+
       //runAutoItScript(`${__dirname}\\testdata`, 'Upload_FIle_Script.exe');
 
-      runAutoItScript(`C:\\Users\\Ashvin.Mewara\\Documents\\WDIO_TypeScript_Cucumber\\testdata`, 'Upload_FIle_Script.exe');
+      runAutoItScript(`filePPath`, 'Upload_FIle_Script.exe');
 
         await browser.pause(2000)
 
@@ -82,21 +85,20 @@ Then(/^I open SITA App for Upload file$/, async() => {
          
        await fileUploadBtn.click()
         
-     await expect(browser).toHaveUrl("https://xadvpweb1.borders.devnet.sita.aero/api-pnr-portal/upload/batch")
+     await expect(browser).toHaveUrl(UserLoginCredentials.qa.Sita_Upload_Url)
       // await browser.$("aria/STARTING").doubleClick()
-
       await browser.pause(2000)
 
 });
 
 /**
- * Get list of users from reqres api
+ * Get list of users from api
  * Sub-steps:
  * 1. Get payload data
  * 2. Make get call by using API helper
  * 3. Store results
  */
-Given(/^Get list of (.*) from reqres.in$/, async function (endpointRef) {
+Given(/^Get list of (.*) from api$/, async function (endpointRef) {
     if (!endpointRef) throw Error(`Given endpoint ref: ${endpointRef} is not valid`)
 
     try {
@@ -128,7 +130,7 @@ Given(/^Get list of (.*) from reqres.in$/, async function (endpointRef) {
         fs.writeFileSync(filename, data)
        // reporter.addStep("E2E_TC001", "info", `API response from ${endpoint} stored in json file`)
     } catch (err) {
-        err.message = `${"E2E_TC001"}: Failed at getting API users from reqres, ${err.message}`
+        err.message = `${"E2E_TC001"}: Failed at getting API users from request, ${err.message}`
         throw err
     }
 });
