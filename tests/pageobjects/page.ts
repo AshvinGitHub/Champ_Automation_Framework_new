@@ -4,8 +4,8 @@
 */
 
 import { UserLoginCredentials } from "../../config/execution.configuration.js"
-import dotenv from 'dotenv'
-dotenv.config()
+// import dotenv from 'dotenv'
+// dotenv.config()
 
 export default class Page {
     /**
@@ -13,29 +13,15 @@ export default class Page {
     * @param path path of the sub page (e.g. /path/to/page.html)
     */
     public open (path: string) {
-        //return browser.url(`https://the-internet.herokuapp.com/${path}`)
         console.log(`Url from process. env-------- ${process.env.QA.trim()}`)
-        console.log(`path from method-------- ${path}`)
-        console.log(`use name - ${UserLoginCredentials.qa.UserName} `)
-        // @ts-ignore
-        console.log(`URL from Test Config file  - ${browser.options.url}`)
-          // @ts-ignore
-        console.log(`Test URL from Test Config file  - ${browser.options.testURL}`)
 
-        // console.log(`directory of autoit file  - ${__dirname}\\testdata`)
+        console.log(`use name from credentials file - ${UserLoginCredentials.qa.UserName} `)
 
         // @ts-ignore
-        return browser.url(UserLoginCredentials.qa.URL)
-        
-
-        // return browser.url(`${process.env.QA.trim()}/${path}`)
-        // return browser.url(`${url}}`)
-        //return browser.url(`${config.baseUrl}`)
-        //return browser.url(config.baseUrl)        
+        return browser.url(UserLoginCredentials.qa.URL) 
     }
         /**All reusable web functions */
         async navigateTo(path: string) {
             await browser.url(path)
-            // await browser.maximizeWindow()
         }
-}
+    }
